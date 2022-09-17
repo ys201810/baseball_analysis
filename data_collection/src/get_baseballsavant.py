@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -8,18 +9,19 @@ BASE_DIR = os.path.join(os.getcwd(), '..')
 print(BASE_DIR)
 
 player_name_id_dict = {
-    'Darvish_Yu': '506433'
+    'Darvish_Yu': '506433',
+    'Ohtani_Shohei':'660271'
 }
 
 
 def run():
-    target_player = 'Darvish_Yu'
+    target_player = 'Ohtani_Shohei'  # 'Darvish_Yu'
     if target_player not in player_name_id_dict.keys():
         print('not exist player name')
         exit(1)
 
     target_player_type = 'pitcher'  # 'pitcher' or 'batter'
-    target_year = [2019, 2020, 2021]
+    target_year = [2018, 2019, 2020, 2021]
 
     driver = webdriver.Chrome('/usr/local/bin/chromedriver')
     target_url = 'https://baseballsavant.mlb.com/statcast_search'
@@ -53,9 +55,10 @@ def run():
         # データのダウンロード
         element = driver.find_element(By.XPATH, '//*[@id="csv_all_pid_"]')
         element.click()
+        time.sleep(15)
 
         # リネームして保存
-        out_file = os.path.join(BASE_DIR, 'data', 'baseball_servent', target_player + '.csv')
+        out_file = os.path.join(BASE_DIR, 'data', 'baseball_savant', target_player + '.csv')
         subprocess.run(['mv', '/Users/shirai1/Downloads/savant_data.csv', out_file])
 
 
