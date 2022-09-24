@@ -8,28 +8,28 @@ BASE_DIR = os.path.join(os.getcwd(), '..', '..')
 print(BASE_DIR)
 fp = FontProperties(fname=r'/Users/shirai1/.local/share/virtualenvs/baseball_analysis-BxQ8eODn/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/ipaexg.ttf', size=16)
 
-plt.rcParams['figure.subplot.bottom'] = 0.15
+plt.rcParams['figure.subplot.bottom'] = 0.2
 plt.rcParams['lines.linewidth'] = 3
 
 def main():
-    target_data = os.path.join(BASE_DIR, 'data_collection', 'data', 'baseball_savant', 'Ohtani_Shohei.csv')  # 'Darvish_Yu.csv'
+    target_data = os.path.join(BASE_DIR, 'data_collection', 'data', 'baseball_savant', 'Darvish_Yu.csv')  # 'Darvish_Yu.csv'
     player_name = os.path.basename(target_data).replace('.csv', '')
     df = pd.read_csv(target_data)
 
     # 対象の球種を指定
-    """
-    ダルビッシュ用
+    # ダルビッシュ用
     df = df[(df['game_date'] >= '2016-01-01') & (df['game_date'] <= '2017-12-31')]
     target_types = ['FF', 'SL', 'SI', 'FC']
     target_type_names = ['4シーム', 'スライダー', '2シーム', 'カッター']
     target_colors = ['red', 'blue', 'green', 'gray']
-    """
 
     # 大谷(ピッチャー)用
+    """
     df = df[(df['game_date'] >= '2020-01-01') & (df['game_date'] <= '2021-12-31')]
     target_types = ['FF', 'SL', 'FS', 'FC']
     target_type_names = ['4シーム', 'スライダー', 'ファストボール', 'カッター']
     target_colors = ['red', 'blue', 'green', 'gray']
+    """
 
     print(f'データ範囲:{df["game_date"].min()} ~ {df["game_date"].max()}')
 
@@ -45,6 +45,7 @@ def main():
     df = df[~df['game_date'].isin(no_use_dates)]
     date_types = df.groupby(['game_date', 'pitch_type'])['release_spin_rate'].mean().index.tolist()
     spins = df.groupby(['game_date', 'pitch_type'])['release_spin_rate'].mean().values.tolist()
+    dates = sorted(df['game_date'].unique().tolist())
 
     for i, target_type in enumerate(target_types):
         tmp_indexes = [n for n, v in enumerate(date_types) if v[1] == target_type]

@@ -10,18 +10,20 @@ print(BASE_DIR)
 
 player_name_id_dict = {
     'Darvish_Yu': '506433',
-    'Ohtani_Shohei':'660271'
+    'Ohtani_Shohei':'660271',
+    'Maeda_Kenta': '628317',
+    'Kikuchi_Yusei': '579328'
 }
 
 
 def run():
-    target_player = 'Ohtani_Shohei'  # 'Darvish_Yu'
+    target_player = 'Kikuchi_Yusei'  # 'Darvish_Yu'
     if target_player not in player_name_id_dict.keys():
         print('not exist player name')
         exit(1)
 
     target_player_type = 'pitcher'  # 'pitcher' or 'batter'
-    target_year = [2018, 2019, 2020, 2021]
+    target_year = [2016, 2017, 2018, 2019, 2020, 2021]
 
     driver = webdriver.Chrome('/usr/local/bin/chromedriver')
     target_url = 'https://baseballsavant.mlb.com/statcast_search'
@@ -60,7 +62,6 @@ def run():
         # リネームして保存
         out_file = os.path.join(BASE_DIR, 'data', 'baseball_savant', target_player + '.csv')
         subprocess.run(['mv', '/Users/shirai1/Downloads/savant_data.csv', out_file])
-
 
     finally:
         driver.quit()
